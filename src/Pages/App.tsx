@@ -11,6 +11,7 @@ function App() {
   const [postagens, setPostagens] = useState<IFirebase[]>([]);
 
   useEffect(() =>{
+    console.log(postagens)
     db.collection('postagens').orderBy('timePostagem', 'desc').onSnapshot((snapshot) => {
       setPostagens(snapshot.docs.map((document)=>{
         return {id: document.id, info: document.data()}
@@ -38,7 +39,7 @@ function App() {
           )
         })
       }
-      <div className='mt-10'></div>
+      <div className='mt-24'></div>
       {
         user ? 
         (

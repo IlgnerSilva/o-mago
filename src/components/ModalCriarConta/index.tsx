@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import { auth } from "../../libs/firebase";
 import Button from "../Button";
 
@@ -17,7 +18,13 @@ export default function ModalCriarConta() {
                 authUser.user?.updateProfile({
                     displayName: usuario
                 })
-                alert('Conta Criada com sucesso!');
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Logado com sucesso!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 setShowModal(false);
             }).catch(err => {
                 alert(err.message)
@@ -36,11 +43,12 @@ export default function ModalCriarConta() {
                                     <h3 className="text-3xl font-semibold">
                                         Crie sua conta!
                                     </h3>
+                                    
                                 </div>
 
                                 {/*body*/}
                                 <div className="relative p-6 flex-auto ">
-                                    <form onSubmit={e => criarConta(e)}>
+                                    <form onSubmit={(e) => criarConta(e)}>
                                         <input onChange={e => setEmail(e.target.value)}
                                             className='m-1 p-1 w-full rounded-md border-solid border-2 border-indigo-600'
                                             type="email"

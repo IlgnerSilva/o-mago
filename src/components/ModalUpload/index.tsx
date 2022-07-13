@@ -1,8 +1,8 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import Swal from 'sweetalert2';
 import Button from "../Button/index";
 import firebase from "firebase/app";
-import { auth, storage, db } from "../../libs/firebase";
+import { storage, db } from "../../libs/firebase";
 
 interface Props {
     user: string | null | undefined
@@ -19,6 +19,7 @@ export default function ModalUpload({ user }: Props){
         e.preventDefault();
         try{
             const upload = storage.ref(`image/${arquivo[0].name}`).put(arquivo[0])
+            console.log(arquivo[0])
             if(arquivo[0].size > 1048576){
                 throw new Error('Só é possível uploade de fotos/videos de até 1mb')
             }

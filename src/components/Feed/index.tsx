@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { db } from "../../libs/firebase"
 import { IFirebase } from "../../types/IFirebase";
 import firebase from "firebase";
-import Button from "../Button";
 
 interface Props {
     user: string | null | undefined
-    info: any
+    info: any | string
     id: string
 }
 
@@ -17,6 +16,7 @@ export default function Feed({ user, info, id }: Props) {
     const [showComentarios, setShowComentarios] = useState(false);
 
     useEffect(() => {
+        console.log(info.titulo)
         db.collection('postagens').doc(id).collection('comentarios').orderBy('timePostagem', 'desc').onSnapshot(snapshot => {
             setComentarios(snapshot.docs.map(document => {
                 return { id: document.id, info: document.data() }
@@ -37,20 +37,28 @@ export default function Feed({ user, info, id }: Props) {
         setNovoComentario('');
 
     }
-    // bg-white max-w-md my-2.5 mx-auto rounded-t-md p-2 mb-10
+
     return (
-        <div className="max-w-md my-0.5 mx-auto rounded-t-md ">
-            <div className="bg-white border-gray-300 w-full border">
+        <div className="max-w-md my-2.5 mx-auto rounded-full ">
+            <div className="bg-white border-gray-300 w-full border rounded-2xl">
                 <div className="grid grid-cols-6 items-center p-3 border-b border-b-gray-300">
                     <div className="col-span-4 text-sm font-semibold"><strong>{info.usuario}</strong></div>
                 </div>
-                <figcaption>
-                    <img src={info.image} alt="Foto da Publicação" />
-                </figcaption>
+                {info.image.includes('.mp4') || info.image.includes('.MOV') ? 
+                    <video className="w-full" controls muted autoPlay>
+                        <source src={info.image} type="video/mp4"/>
+                    </video> : 
+                    <figcaption>
+                        <img src={info.image} alt="Foto da Publicação" />
+                    </figcaption>
+            }
                 <div className="flex flex-col p-4 gap-3">
                     <div className="text-sm">
                         <span className="font-semibold">{info.usuario} </span>
-                        {info.titulo}
+                        {info.titulo.includes('http') ?
+                            <a target="blank" className="text-cyan-600" href={info.titulo}>{info.titulo}</a> : 
+                            <span>{info.titulo}</span>
+                        }
                     </div>
 
                     {
@@ -69,15 +77,15 @@ export default function Feed({ user, info, id }: Props) {
                         comentarios.length > 0 ?
                             <>
                                 <div
-                                    className="text-gray-500 text-sm accordion-button"
-                                    onClick={()=> !showComentarios ? setShowComentarios(true): setShowComentarios(false)}
-                                >{!showComentarios ? `Ver todos os ${comentarios.length} comentários`: `Ver menos`}</div>
+                                    className="cursor-pointer text-gray-500 text-sm accordion-button"
+                                    onClick={() => !showComentarios ? setShowComentarios(true) : setShowComentarios(false)}
+                                >{!showComentarios ? `Ver todos os ${comentarios.length} comentários` : `Ver menos`}</div>
 
                                 {!showComentarios ? <div className="text-sm">
                                     <span className="font-semibold">{comentarios[0].info.nome} </span>
                                     {comentarios[0].info.comentario}
-                                </div>: null}
-                                
+                                </div> : null}
+
                             </>
                             : null
                     }

@@ -1,7 +1,6 @@
 import { auth } from '../../libs/firebase'
-import { IFirebase } from '../../types/IFirebase'
 import Button from '../Button'
-import Form from '../Form/index'
+import Form from '../ModalLogin/index'
 
 interface Props {
     setUser: React.Dispatch<React.SetStateAction<string | null | undefined>>
@@ -9,7 +8,6 @@ interface Props {
 }
 
 export default function Header ({setUser, user}: Props){
-    
     function logout(){
         auth.signOut();
         auth.signOut().then(val =>{
@@ -31,7 +29,7 @@ export default function Header ({setUser, user}: Props){
                     </div>
                 ) : (
                     <div>
-                        <Form user={user} setUser={setUser}/>
+                        <Form setUser={setUser}/>
                     </div>
                 )}
                 </div>
