@@ -16,7 +16,6 @@ export default function Feed({ user, info, id }: Props) {
     const [showComentarios, setShowComentarios] = useState(false);
 
     useEffect(() => {
-        console.log(info.titulo)
         db.collection('postagens').doc(id).collection('comentarios').orderBy('timePostagem', 'desc').onSnapshot(snapshot => {
             setComentarios(snapshot.docs.map(document => {
                 return { id: document.id, info: document.data() }

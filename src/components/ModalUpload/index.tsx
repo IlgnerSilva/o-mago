@@ -19,7 +19,6 @@ export default function ModalUpload({ user }: Props){
         e.preventDefault();
         try{
             const upload = storage.ref(`image/${arquivo[0].name}`).put(arquivo[0])
-            console.log(arquivo[0])
             if(arquivo[0].size > 1048576){
                 throw new Error('Só é possível uploade de fotos/videos de até 1mb')
             }
@@ -43,14 +42,12 @@ export default function ModalUpload({ user }: Props){
                             });
                         setProgress(0);
                         setArquivo(null);
-    
                         setTimeout(()=>{}, 2000);
-    
                         setShowModal(false)
                     })
             })
         }catch(err: any){
-            Swal.fire('Arquivo muito grande!', err.message, 'error');
+            Swal.fire('Erro', err.message, 'error');
         }
     }
 

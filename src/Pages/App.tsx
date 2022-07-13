@@ -2,7 +2,7 @@ import Header from '../components/Header/index';
 import Feed from '../components/Feed/index'
 import './App.css';
 import { db, auth } from './../libs/firebase';
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IFirebase } from '../types/IFirebase';
 import ModalUpload from '../components/ModalUpload/index'
 
@@ -11,7 +11,6 @@ function App() {
   const [postagens, setPostagens] = useState<IFirebase[]>([]);
 
   useEffect(() =>{
-    console.log(postagens)
     db.collection('postagens').orderBy('timePostagem', 'desc').onSnapshot((snapshot) => {
       setPostagens(snapshot.docs.map((document)=>{
         return {id: document.id, info: document.data()}
