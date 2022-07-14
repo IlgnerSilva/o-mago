@@ -21,13 +21,13 @@ export default function ModalCriarConta() {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Logado com sucesso!',
+                    title: 'Usuário criado com sucesso!',
                     showConfirmButton: false,
                     timer: 1500
                 })
                 setShowModal(false);
             }).catch(err => {
-                alert(err.message)
+               Swal.fire('Erro', err.message, 'error')
             })
     }
 
